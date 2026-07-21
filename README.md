@@ -28,8 +28,7 @@ STM32 上电 → IDLE / 1Hz 心跳
 
 | 文件 | 说明 |
 |---|---|
-| `jetson_parse_mocap.py` | V1 协议：被动解析 4 IMU × 9 float（172 字节/包）|
-| `jetson_mocap_v2.py` | V2 协议：双向控制 + 6 段身体模型（268 字节/包），带心跳/命令/响应 |
+| `jetson_mocap_v2.py` | 协议客户端：双向控制 + 6 段身体模型（268 字节/包），带心跳/命令/响应 |
 | `run_ros2_mocap.sh` | ROS2 节点一键启动脚本 |
 | `ros_ws/` | ROS2 工作空间（含节点代码）|
 | `notes/` | 开发记录、测试视频 |
@@ -83,7 +82,7 @@ ROS1 Noetic 用户需将 `rclpy` 改为 `rospy`，消息类型通用。
 ## 使用方式
 
 ```bash
-# V2 完整采集（Ctrl+C 退出时会自动发送 STOP_STREAM）
+# 完整采集（Ctrl+C 退出时会自动发送 STOP_STREAM）
 python3 jetson_mocap_v2.py --port /dev/ttyACM0 run --csv data.csv --print-every 20
 
 # 采集 30 秒自动停止
@@ -91,9 +90,6 @@ python3 jetson_mocap_v2.py --port /dev/ttyACM0 run --duration 30 --csv data.csv
 
 # 仅监测心跳（不启动数据流）
 python3 jetson_mocap_v2.py --port /dev/ttyACM0 idle
-
-# V1 被动采集（不需要握手）
-python3 jetson_parse_mocap.py --csv data.csv
 ```
 
 ## ROS2 话题
