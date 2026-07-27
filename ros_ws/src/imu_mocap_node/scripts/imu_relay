@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+"""Entry point for imu_relay."""
+import sys
+import os
+
+_this_dir = os.path.dirname(os.path.abspath(__file__))
+_pkg_dir = os.path.dirname(_this_dir)
+if _pkg_dir not in sys.path:
+    sys.path.insert(0, _pkg_dir)
+
+from imu_mocap_node.imu_relay import main
+main()

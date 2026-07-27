@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""Entry point for mocap_node."""
+import sys
+import os
+
+# Ensure the package is on PYTHONPATH
+_this_dir = os.path.dirname(os.path.abspath(__file__))
+_pkg_dir = os.path.dirname(_this_dir)
+if _pkg_dir not in sys.path:
+    sys.path.insert(0, _pkg_dir)
+
+from imu_mocap_node.mocap_node import main
+main()
