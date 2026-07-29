@@ -4,11 +4,6 @@ __pycache__/
 ros_ws/build/
 ros_ws/install/
 ros_ws/log/
-slam_ws/build/
-slam_ws/install/
-slam_ws/log/
-rtabmap/build/
-rtabmap/install/
 build/
 install/
 log/
