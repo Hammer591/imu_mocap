@@ -9,3 +9,6 @@ slam_ws/install/
 slam_ws/log/
 rtabmap/build/
 rtabmap/install/
+build/
+install/
+log/
