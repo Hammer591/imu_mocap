@@ -1,17 +1,18 @@
-"""IMU relay: /camera/imu → /imu0 with Madgwick AHRS + auto gyro bias calibration.
+"""IMU relay: /camera/camera/imu → /imu0 with Madgwick AHRS + auto gyro bias calibration.
 
 Subscribes to D435i gyro + accel from realsense2_camera, applies online
 gyro bias calibration (first ~1 s averaged as bias), runs Madgwick filter
 for orientation, and publishes as /imu0 matching mocap 6-segment format.
 
 Run:
-    ros2 launch realsense2_camera rs_launch.py
+    ros2 launch realsense2_camera rs_launch.py enable_gyro:=true enable_accel:=true unite_imu_method:=2
     ros2 run imu_mocap_node imu_relay
 """
 
 import math
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Imu
 
 
@@ -83,7 +84,7 @@ class IMURelay(Node):
         self._filter = MadgwickAHRS(beta)
         self._pub = self.create_publisher(Imu, "/imu0", 10)
         self._sub = self.create_subscription(
-            Imu, "/camera/imu", self._on_imu, 10
+            Imu, "/camera/camera/imu", self._on_imu, qos_profile_sensor_data
         )
         self._last_ts = None
 
@@ -103,7 +104,7 @@ class IMURelay(Node):
         self._lpf_initialized = False
 
         self.get_logger().info(
-            f"Relaying /camera/imu → /imu0 (Madgwick beta={beta}, "
+            f"Relaying /camera/camera/imu → /imu0 (Madgwick beta={beta}, "
             f"gyro LPF alpha={lpf_alpha}, "
             f"calibrating bias over {self._calib_target} samples)"
         )

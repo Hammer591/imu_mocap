@@ -2,15 +2,15 @@
 # Run the IMU mocap ROS2 node.
 # Usage: ./run_ros2_mocap.sh [--ros-args ...]
 #
-# ROS2_DISTRO overridable env var (default: foxy for dev, override for deploy):
-#   ROS2_DISTRO=humble ./run_ros2_mocap.sh
+# ROS2_DISTRO overridable env var (default: humble; override for other distros):
+#   ROS2_DISTRO=foxy ./run_ros2_mocap.sh
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 WS_DIR="$SCRIPT_DIR/ros_ws"
 
-ROS2_DISTRO="${ROS2_DISTRO:-foxy}"
+ROS2_DISTRO="${ROS2_DISTRO:-humble}"
 
 source "/opt/ros/${ROS2_DISTRO}/setup.bash"
 source "$WS_DIR/install/setup.bash"
