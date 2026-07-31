@@ -7,3 +7,6 @@ ros_ws/log/
 build/
 install/
 log/
+
+# rosbag recordings
+bags/

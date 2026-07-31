@@ -123,6 +123,68 @@ ros2 run imu_mocap_node mocap_node
 
 话题对应：`/imu0` = D435i 相机 IMU，`/left_*/imu` `/right_*/imu` = Mocap 6 段。
 
+## ORB-SLAM3 视觉惯性 SLAM（D435i 彩色流 + 轨迹）
+
+已集成 [gjcliff/ORB_SLAM3_ROS2](https://github.com/gjcliff/ORB_SLAM3_ROS2)，支持 Intel RealSense D435i 相机的单目惯性 SLAM。
+
+### 前提条件
+
+- ROS2 Humble（当前环境）
+- D435i 相机已连接
+- 已完成编译（见下方）
+
+### 文件结构
+
+| 文件 / 目录 | 说明 |
+|---|---|
+| `orb_slam3_ws/src/ORB_SLAM3_ROS2/` | ORB-SLAM3-ROS2 源码（含 ORB_SLAM3 子模块） |
+| `orb_slam3_ws/install/` | 编译产物 |
+| `run_orb_slam3.sh` | 一键启动脚本 |
+
+### 编译（首次）
+
+```bash
+cd ~/imu_mocap/orb_slam3_ws
+source /opt/ros/humble/setup.bash
+export PATH="/usr/bin:$PATH"                    # 退出 conda 环境
+export CMAKE_PREFIX_PATH="/home/lab/.local:$CMAKE_PREFIX_PATH"
+colcon build --packages-select orb_slam3_ros2 --symlink-install \
+  --cmake-args -DCMAKE_PREFIX_PATH="/home/lab/.local;/tmp/ros2_deps/install/opt/ros/humble" \
+  -DPython3_EXECUTABLE=/usr/bin/python3
+```
+
+### 启动
+
+```bash
+cd ~/imu_mocap
+./run_orb_slam3.sh          # 带 Pangolin + RViz 可视化
+./run_orb_slam3.sh false    # 仅 RViz, 禁用 Pangolin
+./run_orb_slam3.sh false false  # 无 GUI（纯记录数据）
+```
+
+### ORB-SLAM3 ROS2 话题
+
+| 话题 | 类型 | 说明 |
+|---|---|---|
+| `/orb_odom` | `nav_msgs/Odometry` | 里程计（位姿 + 速度） |
+| `/pose_array` | `geometry_msgs/PoseArray` | 累积轨迹（随时间增长的位姿数组） |
+| `/live_point_cloud` | `sensor_msgs/PointCloud2` | 稀疏地图点云 |
+| `/orb_camera/image` | `sensor_msgs/Image` | 处理后图像（MONO8） |
+| `/orb_camera/info` | `sensor_msgs/CameraInfo` | 相机内参 |
+| TF: `odom → base_link` | `tf2_msgs/TFMessage` | 相对位姿变换 |
+
+相机位姿通过 TF `odom → base_link` 和 `/orb_odom` 发布，轨迹通过 `/pose_array`（累积 PoseArray）提供。
+
+### 彩色流说明
+
+D435i 彩色流通过 `realsense2_camera` 以 640×480@30fps 发布到 `/camera/camera/color/image_raw`，ORB-SLAM3 订阅该话题并在内部转为 MONO8 灰度图进行特征点提取和跟踪。
+
+### 已知问题
+
+- 首次启动需要缓慢移动以初始化 IMU（否则 SLAM 会持续重置）
+- 地图保存功能因环境缺少 `nav2_map_server` 被禁用（不影响 SLAM 实时运行）
+- 启动前确保已退出 conda 环境（ROS2 需要 Python 3.10）
+
 ## 最终部署（Jetson Ubuntu 22.04 + ROS2 Humble）
 
 ### 迁移步骤
