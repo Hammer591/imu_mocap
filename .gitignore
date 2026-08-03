@@ -1,12 +1,27 @@
 notes/*.mp4
 __pycache__/
 *.pyc
-ros_ws/build/
-ros_ws/install/
-ros_ws/log/
+
+# ROS2 工作空间编译产物（源码保留跟踪）
 build/
 install/
 log/
+ros_ws/build/
+ros_ws/install/
+ros_ws/log/
+orb_slam3_ws/build/
+orb_slam3_ws/install/
+orb_slam3_ws/log/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/output/
+
+# ORB-SLAM3 核心库编译产物
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/build/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/lib/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/Examples_old/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/Examples/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/Thirdparty/DBoW2/lib/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/Thirdparty/g2o/lib/
+orb_slam3_ws/src/ORB_SLAM3_ROS2/ORB_SLAM3/Thirdparty/Sophus/build/
 
 # rosbag recordings
 bags/
