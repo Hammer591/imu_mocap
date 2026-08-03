@@ -1,0 +1,48 @@
+readingDataPointsFilters:
+ # - ProjectOrthoDataPointsFilter
+ - SimpleSensorNoiseDataPointsFilter
+ - SurfaceNormalDataPointsFilter:
+     knn: 5
+     keepNormals: 1
+     keepDensities: 1
+ #- MaxDensityDataPointsFilter:
+ #    maxDensity: 10000
+ - ObservationDirectionDataPointsFilter
+ - OrientNormalsDataPointsFilter
+
+
+referenceDataPointsFilters:
+ # - ProjectOrthoDataPointsFilter
+ - SimpleSensorNoiseDataPointsFilter
+ - SurfaceNormalDataPointsFilter:
+     knn: 5
+     keepNormals: 1
+     keepDensities: 1
+ #- MaxDensityDataPointsFilter:
+ #    maxDensity: 10000
+ - ObservationDirectionDataPointsFilter
+ - OrientNormalsDataPointsFilter
+
+
+
+matcher:
+ KDTreeMatcher
+
+outlierFilters:
+   - NullOutlierFilter
+
+errorMinimizer:
+   IdentityErrorMinimizer
+
+transformationCheckers:
+   - CounterTransformationChecker
+
+inspector:
+  VTKFileInspector:
+     baseFileName : vissteps
+     dumpDataLinks : 1
+     dumpReading : 1
+     dumpReference : 1
+
+logger:
+  FileLogger
